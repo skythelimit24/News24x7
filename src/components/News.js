@@ -29,7 +29,7 @@ const [totalResults, setTotalResults] = useState(0)
     updateNews();
     },[])
     const fetchMoreData = async () => { 
-       const url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+       const url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
        setpage(page+1) 
        let data= await fetch(url);
         let parsedData= await data.json();
@@ -38,7 +38,7 @@ const [totalResults, setTotalResults] = useState(0)
     };
         return (
             <>
-            <h1>News24x7-Top {capitalizeFirstLetter(props.category)} Headlines</h1>
+            <h1 className="text-center" style={{margin:'35px 0px',marginTop:'90px'}}>News24x7-Top {capitalizeFirstLetter(props.category)} Headlines</h1>
             {loading && <Spinner/>} 
                <InfiniteScroll
           dataLength={articles.length}
