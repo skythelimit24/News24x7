@@ -16,6 +16,7 @@ const [totalResults, setTotalResults] = useState(0)
     const url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
     setLoading(true)    
     let data= await fetch(url);
+    console.log(data)
     props.setProgress(30);
         let parsedData= await data.json();
         props.setProgress(50);
@@ -24,10 +25,12 @@ const [totalResults, setTotalResults] = useState(0)
       setLoading(false)  
         props.setProgress(100);
     }
+    
     useEffect(() => {
     document.title=`News24X7-${capitalizeFirstLetter(props.category)}`
     updateNews();
-    },[])
+    },[props.category])
+    
     const fetchMoreData = async () => { 
        const url=`https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
        setpage(page+1) 
@@ -35,7 +38,9 @@ const [totalResults, setTotalResults] = useState(0)
         let parsedData= await data.json();
         setArticles(articles.concat(parsedData.articles))
         setTotalResults(parsedData.totalResults)
+        
     };
+    
         return (
             <>
             <h1 className="text-center" style={{margin:'35px 0px',marginTop:'90px'}}>News24x7-Top {capitalizeFirstLetter(props.category)} Headlines</h1>
@@ -43,7 +48,7 @@ const [totalResults, setTotalResults] = useState(0)
                <InfiniteScroll
           dataLength={articles.length}
           next={fetchMoreData}
-          hasMore={articles.length!==totalResults}
+           hasMore={articles.length!==totalResults}
           loader={<Spinner/>}
         >  
         <div className="container">
